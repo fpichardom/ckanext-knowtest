@@ -15,7 +15,7 @@ class KnowTestPlugin(plugins.SingletonPlugin):
 
     # plugins.implements(plugins.IAuthFunctions)
     # plugins.implements(plugins.IActions)
-    # plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IBlueprint)
     # plugins.implements(plugins.IClick)
     # plugins.implements(plugins.ITemplateHelpers)
     # plugins.implements(plugins.IValidators)
