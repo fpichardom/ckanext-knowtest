@@ -2,10 +2,10 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 
-# import ckanext.{{cookiecutter.project_shortname}}.cli as cli
-# import ckanext.{{cookiecutter.project_shortname}}.helpers as helpers
-# import ckanext.{{cookiecutter.project_shortname}}.views as views
-# from ckanext.{{cookiecutter.project_shortname}}.logic import (
+# import ckanext.knowtest.cli as cli
+# import ckanext.knowtest.helpers as helpers
+# import ckanext.knowtest.views as views
+# from ckanext.knowtest.logic import (
 #     action, auth, validators
 # )
 
