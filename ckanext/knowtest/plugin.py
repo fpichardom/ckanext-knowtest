@@ -4,7 +4,7 @@ import ckan.plugins.toolkit as toolkit
 
 # import ckanext.knowtest.cli as cli
 # import ckanext.knowtest.helpers as helpers
-# import ckanext.knowtest.views as views
+import ckanext.knowtest.views as views
 # from ckanext.knowtest.logic import (
 #     action, auth, validators
 # )
@@ -40,8 +40,8 @@ class KnowTestPlugin(plugins.SingletonPlugin):
 
     # IBlueprint
 
-    # def get_blueprint(self):
-    #     return views.get_blueprints()
+    def get_blueprint(self):
+        return views.get_blueprints()
 
     # IClick
 
