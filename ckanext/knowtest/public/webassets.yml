@@ -1,0 +1,4 @@
+custom:
+  filters: cssrewrite
+  output: base/%(version)s_custom.css
+  contents: custom.css

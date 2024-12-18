@@ -2,7 +2,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from collections import OrderedDict
 import json
-
+import os
 
 # import ckanext.knowtest.cli as cli
 # import ckanext.knowtest.helpers as helpers
@@ -25,11 +25,58 @@ class KnowTestPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IFacets)
     plugins.implements(plugins.IPackageController)
 
+
+     # List of fields that should be processed as JSON lists
+     # Add fields as needed
+    JSON_LIST_FIELDS = [
+        'task_cluster',
+        'task',
+        # Add more fields here
+    ]
+
+    def _process_json_list_field(self, value, field_name='unknown'):
+        """
+        Process a field that should be a JSON list of strings
+        
+        Args:
+            value: The value to process (string or list)
+            field_name: Name of field for logging purposes
+            
+        Returns:
+            list: Processed list of strings
+        """
+        print(f"Incoming {field_name}: {value} of type {type(value)}")
+        
+        try:
+            # If it's a JSON string, parse it
+            if isinstance(value, str) and value.strip().startswith('['):
+                items = json.loads(value)
+            # If it's already a list, use it as is
+            elif isinstance(value, list):
+                items = value
+            else:
+                items = []
+
+            # Ensure all items are strings and remove empty values
+            items = [str(item).strip() for item in items if item]
+            
+            print(f"Processed {field_name}: {items}")
+            return items
+            
+        except json.JSONDecodeError:
+            print(f"Error parsing JSON for {field_name}: {value}")
+            return []
+        except Exception as e:
+            print(f"Unexpected error processing {field_name}: {str(e)}")
+            return []
+
     # IConfigurer
 
     def update_config(self, config_):
         toolkit.add_template_directory(config_, "templates")
+        print("Registering public directory:", os.path.join(os.path.dirname(__file__), 'public'))
         toolkit.add_public_directory(config_, "public")
+        #toolkit.add_resource('assets', 'base')
         toolkit.add_resource("assets", "knowtest")
 
 
@@ -71,6 +118,7 @@ class KnowTestPlugin(plugins.SingletonPlugin):
         new_facets = OrderedDict()
         new_facets['type'] = toolkit._('Digitization Resource Type')
         new_facets['task_cluster'] = toolkit._('Task Clusters')
+        new_facets['task'] = toolkit._('Tasks')
 
         # Add the rest of the facets
         for key, value in facets_dict.items():
@@ -86,30 +134,13 @@ class KnowTestPlugin(plugins.SingletonPlugin):
 
     def before_dataset_index(self, pkg_dict):
         # Get the task_cluster value
-        task_cluster = pkg_dict.get('task_cluster', '')
-        print(f"Incoming task_cluster: {task_cluster} of type {type(task_cluster)}")
-        
-        try:
-            # If it's a JSON string, parse it
-            if isinstance(task_cluster, str) and task_cluster.strip().startswith('['):
-                task_clusters = json.loads(task_cluster)
-            # If it's already a list, use it as is
-            elif isinstance(task_cluster, list):
-                task_clusters = task_cluster
-            else:
-                task_clusters = []
 
-            # Ensure all items are strings and remove empty values
-            task_clusters = [str(t).strip() for t in task_clusters if t]
-            
-            print(f"Processed task_clusters: {task_clusters}")
-            pkg_dict['task_cluster'] = task_clusters
-            
-        except json.JSONDecodeError:
-            # Handle invalid JSON
-            print(f"Error parsing task_cluster JSON: {task_cluster}")
-            pkg_dict['task_cluster'] = []
-        
+        for field_name in self.JSON_LIST_FIELDS:
+            if field_name in pkg_dict:
+                pkg_dict[field_name] = self._process_json_list_field(
+                    pkg_dict.get(field_name, ''),
+                    field_name
+                )
         return pkg_dict
    
     # Required methods with default implementations

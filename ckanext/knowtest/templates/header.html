@@ -1,0 +1,49 @@
+{% ckan_extends %}
+
+{% block header_site_navigation_tabs %}
+  {% set dataset_type = h.default_package_type() %}
+  {% set org_type = h.default_group_type('organization') %}
+  {% set group_type = h.default_group_type('group') %}
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-white" href="#" id="datasetsDropdown" 
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ _('Digitization Resources') }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="datasetsDropdown">
+      <li>
+        <a class="dropdown-item text-white" href="{{ h.url_for('dataset.search') }}">
+          {{ _('Default Datasets') }}
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item text-white" href="{{ h.url_for('web-reference.search') }}">
+          {{ _('Web References') }}
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item text-white" href="{{ h.url_for('journal-article.search') }}">
+          {{ _('Journal Articles') }}
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link text-white" href="{{ h.url_for(org_type ~ '.index') }}">
+      {{ h.humanize_entity_type('organization', org_type, 'main nav') or _('Organizations') }}
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link text-white" href="{{ h.url_for(group_type ~ '.index') }}">
+      {{ h.humanize_entity_type('group', group_type, 'main nav') or _('Groups') }}
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link text-white" href="{{ h.url_for('home.about') }}">
+      {{ _('About') }}
+    </a>
+  </li>
+{% endblock %}

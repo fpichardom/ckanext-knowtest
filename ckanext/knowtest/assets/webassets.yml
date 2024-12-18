@@ -1,0 +1,20 @@
+# knowtest-js:
+#   filter: rjsmin
+#   output: ckanext-knowtest/%(version)s-knowtest.js
+#   contents:
+#     - js/knowtest.js
+#   extra:
+#     preload:
+#       - base/main
+
+# knowtest-css:
+#   filter: cssrewrite
+#   output: ckanext-knowtest/%(version)s-knowtest.css
+#   contents:
+#     - css/knowtest.css
+
+# main:
+#   output: base/%(version)s_main.css
+#   contents:
+#     - css/main.css
+#   filter: cssrewrite
