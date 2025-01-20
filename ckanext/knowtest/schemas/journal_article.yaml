@@ -132,28 +132,6 @@ dataset_fields:
   preset: dataset_organization
   required: True
 
-# - field_name: version
-#   label: Version
-#   validators: ignore_missing unicode_safe package_version_validator
-#   form_placeholder: '1.0'
-
-# - field_name: license_id
-#   label: License
-#   form_snippet: license.html
-#   help_text: License definitions and additional information can be found at http://opendefinition.org/
-
-# - field_name: maintainer
-#   label: Maintainer
-#   form_placeholder: Joe Bloggs
-#   display_property: dc:contributor
-
-# - field_name: maintainer_email
-#   label: Maintainer Email
-#   form_placeholder: joe@example.com
-#   display_property: dc:contributor:email
-#   display_snippet: email.html
-#   display_email_name_field: maintainer
-
 resource_fields:
 
 - field_name: url
@@ -178,8 +156,3 @@ resource_fields:
 - field_name: format
   label: Format
   preset: resource_format_autocomplete
-
-# - field_name: version
-#   label: Version
-#   validators: ignore_missing unicode_safe package_version_validator
-#   form_placeholder: '1.0'
